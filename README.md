@@ -19,7 +19,7 @@ Montacarga funcional cuyo objetivo es mostrar mediante un display 7 segmentos el
 
 Su función principal mostrar el piso donde estan ubicados los usuarios.  
 
-El codigo esta conformado por LEDS, un display 7 segmentos, contadores, banderas, funciones, condicionales y uso de switch.
+El codigo esta conformado por LEDS, un display 7 segmentos, contadores, banderas, funciones, condicionales (uso de if y switch).
 Muestra de como se conforma el codigo:
 ```c++
 //Variables y puertos usados
