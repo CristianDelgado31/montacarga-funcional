@@ -1,0 +1,266 @@
+// C++ code
+//
+#define LED_MOVIMIENTO 13
+#define LED_PAUSA 10
+
+
+#define A 7
+#define B 8
+#define C 6
+#define D 5
+#define E A1
+#define F A2
+#define G A3
+int ContadorPiso9 = 0;
+int FlagPlantaBaja = 0;
+int contador = 0;
+int contadorEmergencia = 0;
+//prender
+void Mostrar7Segmentos(int letra1,int letra2,int letra3,int letra4,int letra5,int letra6,int letra7, int tiempo);
+//apagar
+void Apagar7Segmentos(int letra1,int letra2,int letra3,int letra4,int letra5,int letra6,int letra7);
+//funcion Piso 0 y 9 
+void MostrarYAvisar(int letra1,int letra2,int letra3,int letra4,int letra5,int letra6,int letra7,int clave);
+//avisar pulsador de emergencia
+void AvisarPulsadorEmergencia(int letra1,int letra2,int letra3,int letra4,int letra5,int letra6,int letra7);
+
+
+void setup()
+{
+  pinMode(LED_MOVIMIENTO, OUTPUT);
+  pinMode(LED_PAUSA, OUTPUT);
+  pinMode(A, OUTPUT);
+  pinMode(B, OUTPUT);
+  pinMode(C, OUTPUT);
+  pinMode(D, OUTPUT);
+  pinMode(E, OUTPUT);
+  pinMode(F, OUTPUT);
+  pinMode(G, OUTPUT);
+  
+  
+  //pulsadores
+  pinMode(9,INPUT_PULLUP);
+  pinMode(11,INPUT_PULLUP);
+  pinMode(12,INPUT_PULLUP);
+  Serial.begin(9600);
+  
+  
+}
+
+void loop()
+{
+  int lecturaMovimiento = digitalRead(9);
+  //Serial.println(lecturaMovimiento);
+  int lecturaBajar = digitalRead(11);
+  //Serial.println(lecturaPausa);
+  int lecturaEmergencia = digitalRead(12);
+  //Serial.println(lecturaEmergencia);
+ 
+  //LED ROJO encendido y LED VERDE apagado
+  digitalWrite(LED_PAUSA, HIGH);
+  digitalWrite(LED_MOVIMIENTO, LOW);
+  
+  //Serial.println(contador);
+  
+  //Muestra planta baja, numero 0
+  
+  if (FlagPlantaBaja == 0)
+  {
+     Serial.println("Planta Baja");
+      digitalWrite(A, HIGH);
+      digitalWrite(B, HIGH);
+      digitalWrite(C, HIGH);
+      digitalWrite(E, HIGH);
+      digitalWrite(F, HIGH);
+      digitalWrite(G, HIGH);
+      FlagPlantaBaja = 1;
+  }
+  
+  
+  //Serial.println(contadorEmergencia);
+  if (lecturaEmergencia == 0)
+  {
+   	 contadorEmergencia++;
+     delay(4000);
+  }
+  
+  if (contadorEmergencia % 2 == 0)
+  {
+  
+    if (lecturaMovimiento == 0 || lecturaBajar == 0)
+    {
+      //LED ROJO apagado 
+      digitalWrite(LED_PAUSA, LOW);
+      //Condición el tipo de pulsador apretado
+      if (lecturaBajar == 0)
+      {
+        contador--; 
+      }
+      else
+      {
+        contador++;
+      }
+
+      //no sigue sumando el contador si es mayor que 9
+      if (contador > 9)
+      {
+        contador = 9;
+      }
+      if (contador < 0)
+      {
+        contador = 0;
+      }
+      if (ContadorPiso9 != 0 and contador != 9)
+      {
+       	ContadorPiso9 = 0; 
+      }
+
+      //
+      switch(contador){
+        case 0:
+          if (lecturaBajar == 0)
+          {
+             MostrarYAvisar(A,B,C,E,F,G,A,0);
+          } 
+          if (lecturaMovimiento == 0)
+          {
+           Mostrar7Segmentos(A,B,C,E,F,G,A,3000);
+           Serial.println("Planta Baja");
+          }
+           break;
+        case 1:
+          if (lecturaBajar == 0)
+          {
+             Apagar7Segmentos(A,B,D,F,G,A,B);   
+          } 
+          Apagar7Segmentos(A,B,C,E,F,G,A);
+          Mostrar7Segmentos(A,E,A,E,A,E,A,3000);
+          Serial.println("Piso 1");
+          break;
+        case 2:
+          if (lecturaBajar == 0)
+          {
+             Apagar7Segmentos(A,B,D,E,F,A,B);   
+          } 
+          Apagar7Segmentos(A,E,A,E,A,E,A);
+          Mostrar7Segmentos(A,B,D,F,G,A,B,3000);
+          Serial.println("Piso 2");
+          break;
+        case 3:
+          if (lecturaBajar == 0)
+          {
+             Apagar7Segmentos(A,C,D,E,A,C,D);   
+          } 
+          Apagar7Segmentos(A,B,D,F,G,A,B);
+          Mostrar7Segmentos(A,B,D,E,F,A,B,3000);
+          Serial.println("Piso 3");
+          break;
+         case 4:
+          if (lecturaBajar == 0)
+          {
+             Apagar7Segmentos(B,C,D,E,F,B,C);   
+          } 
+          Apagar7Segmentos(A,B,D,E,F,A,B);
+          Mostrar7Segmentos(A,C,D,E,A,C,D,3000);
+          Serial.println("Piso 4");
+          break;
+        case 5:
+          if (lecturaBajar == 0)
+          {
+             Apagar7Segmentos(B,C,D,E,F,B,C);   
+          } 
+          Apagar7Segmentos(A,C,D,E,A,C,D);
+          Mostrar7Segmentos(B,C,D,E,F,B,C,3000);
+          Serial.println("Piso 5");
+          break;
+        case 6:
+          if (lecturaBajar == 0)
+          {
+             Apagar7Segmentos(A,B,E,A,B,E,A);   
+          } 
+          Apagar7Segmentos(B,C,D,E,F,B,C);
+          Mostrar7Segmentos(B,C,D,E,F,G,B,3000);
+          Serial.println("Piso 6");
+          break;
+        case 7:
+          if (lecturaBajar == 0)
+          {
+             Apagar7Segmentos(A,B,C,D,E,F,G);   
+          } 
+          Apagar7Segmentos(B,C,D,E,F,G,B);
+          Mostrar7Segmentos(A,B,E,A,B,E,A,3000);
+          Serial.println("Piso 7");
+          break;
+         case 8:
+          if (lecturaBajar == 0)
+          {
+             Apagar7Segmentos(A,B,C,D,E,F,A);   
+          }  
+          Apagar7Segmentos(A,B,E,A,B,E,A);
+          Mostrar7Segmentos(A,B,C,D,E,F,G,3000);
+          Serial.println("Piso 8");
+          break;
+         case 9:
+          if (lecturaMovimiento == 0 and ContadorPiso9 > 0)
+          {
+             MostrarYAvisar(A,B,C,D,E,F,A,9);
+          }
+          if (lecturaMovimiento == 0 and ContadorPiso9 == 0)
+          {
+            Apagar7Segmentos(A,B,C,D,E,F,G);
+            Mostrar7Segmentos(A,B,C,D,E,F,A,3000);
+            Serial.println("Piso 9");
+            ContadorPiso9++;
+          }
+          break;
+    }
+
+    }
+  }//FIN DEL IF contadorEmergencia
+
+
+}
+void Mostrar7Segmentos(int letra1,int letra2,int letra3,int letra4,int letra5,int letra6,int letra7, int tiempo)
+{
+  	digitalWrite(LED_MOVIMIENTO, HIGH);
+	delay(tiempo);  
+    digitalWrite(letra1, HIGH);
+    digitalWrite(letra2, HIGH);
+    digitalWrite(letra3, HIGH);
+    digitalWrite(letra4, HIGH);
+    digitalWrite(letra5, HIGH);
+    digitalWrite(letra6, HIGH);
+    digitalWrite(letra7, HIGH);
+}
+void Apagar7Segmentos(int letra1,int letra2,int letra3,int letra4,int letra5,int letra6,int letra7)
+{
+ 	digitalWrite(LED_MOVIMIENTO, LOW);
+    digitalWrite(letra1, LOW);
+    digitalWrite(letra2, LOW);
+    digitalWrite(letra3, LOW);
+    digitalWrite(letra4, LOW);
+    digitalWrite(letra5, LOW);
+    digitalWrite(letra6, LOW);
+    digitalWrite(letra7, LOW);
+}
+void MostrarYAvisar(int letra1,int letra2,int letra3,int letra4,int letra5,int letra6,int letra7,int clave)
+{
+ 	digitalWrite(LED_MOVIMIENTO, LOW);
+  	digitalWrite(LED_PAUSA, HIGH);
+    digitalWrite(letra1, HIGH);
+    digitalWrite(letra2, HIGH);
+    digitalWrite(letra3, HIGH);
+    digitalWrite(letra4, HIGH);
+    digitalWrite(letra5, HIGH);
+    digitalWrite(letra6, HIGH);
+    digitalWrite(letra7, HIGH);
+    if (clave == 0)
+    {
+       Serial.println("Usted ya esta en Planta Baja.");
+    }
+  	if (clave == 9)
+    {
+       Serial.println("Usted ya esta en el piso 9.");
+    }
+  	delay(4000);
+}
