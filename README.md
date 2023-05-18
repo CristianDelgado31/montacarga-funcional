@@ -100,6 +100,7 @@ switch(contador){
           Serial.println("Piso 2");
           break;
 }
+//contadores
 if (lecturaBajar == 0)
 {
     contador--; 
@@ -109,17 +110,17 @@ else
     contador++;
 }
 //Uso de bandera
-  if (FlagPlantaBaja == 0)
-  {
-     Serial.println("Planta Baja");
-      digitalWrite(A, HIGH);
-      digitalWrite(B, HIGH);
-      digitalWrite(C, HIGH);
-      digitalWrite(E, HIGH);
-      digitalWrite(F, HIGH);
-      digitalWrite(G, HIGH);
-      FlagPlantaBaja = 1;
-  }
+if (FlagPlantaBaja == 0)
+{
+    Serial.println("Planta Baja");
+    digitalWrite(A, HIGH);
+    digitalWrite(B, HIGH);
+    digitalWrite(C, HIGH);
+    digitalWrite(E, HIGH);
+    digitalWrite(F, HIGH);
+    digitalWrite(G, HIGH);
+    FlagPlantaBaja = 1;
+}
 
 
 ```
